@@ -59,15 +59,15 @@ const productSchema = new mongoose.Schema(
       type: String,
       enum: ["Woven", "Polyester", "CottonPolyester", "Oscar", "Green", "Blue"],
     },
-    // ratings: [
-    //   {
-    //     star: Number,
-    //     postedBy: {
-    //       type: ObjectId,
-    //       ref: "User",
-    //     },
-    //   },
-    // ],
+    ratings: [
+      {
+        star: Number,
+        postedBy: {
+          type: ObjectId,
+          ref: "User",
+        },
+      },
+    ],
   },
   { timestamps: true }
 );
