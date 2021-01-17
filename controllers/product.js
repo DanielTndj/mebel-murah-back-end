@@ -68,7 +68,31 @@ exports.update = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).json({
-      err: err.message
-    })
+      err: err.message,
+    });
   }
+};
+
+exports.list = async (req, res) => {
+  try {
+    // sort : createdAt/updatedAt
+    // order: desc/asc
+    // limit: number of products
+    const { sort, order, limit } = req.body;
+    const products = await Product.find({})
+      .populate("category")
+      .populate("subs")
+      .sort([[sort, order]])
+      .limit(limit)
+      .exec();
+
+    res.json(products);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.productsCount = async (req, res) => {
+  let total = await Product.find({}).estimatedDocumentCount().exec();
+  res.json(total)
 };
