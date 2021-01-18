@@ -1,4 +1,5 @@
 const SubCategory = require("../models/sub-category");
+const Product = require("../models/product");
 const slugify = require("slugify");
 
 exports.create = async (req, res) => {
@@ -31,8 +32,9 @@ exports.read = async (req, res) => {
   const { slug } = req.params;
   try {
     const sub = await SubCategory.findOne({ slug }).exec();
+    const products = await Product.find({ subs: sub }).exec();
 
-    res.json(sub);
+    res.json({ sub, products });
   } catch (error) {
     res.status(400).send("Sub category not found");
   }
