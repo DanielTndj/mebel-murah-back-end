@@ -56,7 +56,7 @@ const productSchema = new mongoose.Schema(
     },
     fabric: {
       type: String,
-      enum: ["Woven", "Polyester", "CottonPolyester", "Oscar", "Green", "Blue"],
+      enum: ["Woven", "Polyester", "CottonPolyester", "Oscar"],
     },
     ratings: [
       {
