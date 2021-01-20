@@ -224,22 +224,26 @@ const handleStars = (req, res, stars) => {
     });
 };
 
+const handleSub = async (req, res, sub) => {
+  const products = await Product.find({ subs: sub })
+    .populate("category", "_id name")
+    .populate("subs", "_id name")
+    .populate("postedBy", "_id name")
+    .exec();
+
+  res.json(products);
+};
+
 exports.searchFilters = async (req, res) => {
-  const { query, price, category, stars } = req.body;
+  const { query, price, category, stars, sub } = req.body;
 
-  if (query) {
-    await handleQuery(req, res, query);
-  }
+  if (query) await handleQuery(req, res, query);
 
-  if (price !== undefined) {
-    await handlePrice(req, res, price);
-  }
+  if (price !== undefined) await handlePrice(req, res, price);
 
-  if (category) {
-    await handleCategory(req, res, category);
-  }
+  if (category) await handleCategory(req, res, category);
 
-  if (stars) {
-    await handleStars(req, res, stars);
-  }
+  if (stars) await handleStars(req, res, stars);
+
+  if (sub) await handleSub(req, res, sub);
 };
