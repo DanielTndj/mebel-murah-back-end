@@ -191,14 +191,41 @@ const handleCategory = async (req, res, category) => {
       .populate("postedBy", "_id name")
       .exec();
 
-      res.json(products)
+    res.json(products);
   } catch (error) {
     console.log(error);
   }
 };
 
+const handleStars = (req, res, stars) => {
+  Product.aggregate([
+    // generate project based on existing fields on Product model
+    {
+      $project: {
+        document: "$$ROOT", //giving access to new entire document
+        floorAverage: {
+          $floor: { $avg: "$ratings.star" },
+        },
+      },
+    },
+    { $match: { floorAverage: stars } },
+  ])
+    .limit(12)
+    .exec((err, aggregates) => {
+      if (err) console.log("Aggregates ", err);
+      Product.find({ _id: aggregates })
+        .populate("category", "_id name")
+        .populate("subs", "_id name")
+        .populate("postedBy", "_id name")
+        .exec((err, products) => {
+          if (err) console.log("Product aggregate error", err);
+          res.json(products);
+        });
+    });
+};
+
 exports.searchFilters = async (req, res) => {
-  const { query, price, category } = req.body;
+  const { query, price, category, stars } = req.body;
 
   if (query) {
     await handleQuery(req, res, query);
@@ -210,5 +237,9 @@ exports.searchFilters = async (req, res) => {
 
   if (category) {
     await handleCategory(req, res, category);
+  }
+
+  if (stars) {
+    await handleStars(req, res, stars);
   }
 };
