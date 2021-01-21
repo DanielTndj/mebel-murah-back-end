@@ -15,7 +15,7 @@ exports.create = async (req, res) => {
 };
 
 exports.listAll = async (req, res) => {
-  let products = await Product.find()
+  let products = await Product.find({})
     .limit(parseInt(req.params.count))
     .populate("category")
     .populate("subs")
@@ -245,23 +245,23 @@ const handleShipping = async (req, res, shipping) => {
 };
 
 const handleColor = async (req, res, color) => {
-   const products = await Product.find({ color })
-     .populate("category", "_id name")
-     .populate("subs", "_id name")
-     .populate("postedBy", "_id name")
-     .exec();
+  const products = await Product.find({ color })
+    .populate("category", "_id name")
+    .populate("subs", "_id name")
+    .populate("postedBy", "_id name")
+    .exec();
 
-   res.json(products);
+  res.json(products);
 };
 
 const handleFabric = async (req, res, fabric) => {
-   const products = await Product.find({ fabric })
-     .populate("category", "_id name")
-     .populate("subs", "_id name")
-     .populate("postedBy", "_id name")
-     .exec();
+  const products = await Product.find({ fabric })
+    .populate("category", "_id name")
+    .populate("subs", "_id name")
+    .populate("postedBy", "_id name")
+    .exec();
 
-   res.json(products);
+  res.json(products);
 };
 
 exports.searchFilters = async (req, res) => {
@@ -288,7 +288,7 @@ exports.searchFilters = async (req, res) => {
 
   if (shipping) await handleShipping(req, res, shipping);
 
-  if (shipping) await handleColor(req, res, color);
+  if (color) await handleColor(req, res, color);
 
-  if (shipping) await handleFabric(req, res, fabric);
+  if (fabric) await handleFabric(req, res, fabric);
 };

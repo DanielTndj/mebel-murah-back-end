@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
+// middlewares
+const { authCheck } = require("../middlewares/auth");
 
-router.get("/user", (req, res) => {
-  res.json({
-    data: "response from /user",
-  });
-});
+// controllers
+const { userCart, getUserCart } = require("../controllers/user");
+
+router.post("/user/cart", authCheck, userCart); //save cart
+router.get("/user/cart", authCheck, getUserCart); //get cart
 
 module.exports = router;
