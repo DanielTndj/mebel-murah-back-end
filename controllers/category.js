@@ -25,7 +25,6 @@ exports.list = async (req, res) => {
 
     res.json(categories);
   } catch (error) {
-    console.log(err);
     res.status(400).send("Categories are empty");
   }
 };
