@@ -5,8 +5,8 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "mebelmurah99@gmail.com",
-    pass: "cob4cob4",
+    user: product.env.EMAIL,
+    pass: process.env.PASS,
   },
 });
 
@@ -36,7 +36,7 @@ exports.orderStatus = async (req, res) => {
   console.log("USER EMAIL", userEmail);
 
   const mailOptions = {
-    from: "mebelmurah99@gmail.com",
+    from: product.env.EMAIL,
     to: userEmail.email,
     subject: "Your Order Status",
     text: `Your order status is ${orderStatus}. Thank you for ordering in our shop :)`,
