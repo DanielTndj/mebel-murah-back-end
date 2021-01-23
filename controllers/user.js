@@ -112,7 +112,8 @@ exports.applyCouponToCart = async (req, res) => {
 
 exports.createOrder = async (req, res) => {
   const { paymentIntent } = req.body.stripeResponse;
-  const user = await User.find({ email: req.user.email }).exec();
+  
+  const user = await User.findOne({ email: req.user.email }).exec();
 
   let { products } = await Cart.findOne({ orderedBy: user._id }).exec();
 
