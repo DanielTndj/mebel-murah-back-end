@@ -1,12 +1,12 @@
 const Order = require("../models/order");
 
 exports.orders = async (req, res) => {
-  let orders = await Order.find({})
+  let allOrders = await Order.find({})
     .sort("-createdAt")
     .populate("products.product")
     .exec();
 
-  res.json(orders);
+  res.json(allOrders);
 };
 
 exports.orderStatus = async (req, res) => {
