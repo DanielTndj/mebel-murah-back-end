@@ -4,6 +4,15 @@ const Cart = require("../models/cart");
 const Coupon = require("../models/coupon");
 const Order = require("../models/order");
 const uniqueid = require("uniqueid");
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASS,
+  },
+});
 
 exports.userCart = async (req, res) => {
   const { cart } = req.body;
@@ -137,6 +146,18 @@ exports.createOrder = async (req, res) => {
   let updated = await Product.bulkWrite(bulkOption, { new: true });
   console.log("UPDATED QUANTITY AND SOLD OF PRODUCTS ", updated);
 
+  const mailOptions = {
+    from: process.env.EMAIL,
+    to: req.user.email,
+    subject: "Status Pesanan",
+    text: `Order ID: ${paymentIntent.id}\n\n\nPembayaran anda akan segera kami periksa maksimal 1X24 jam. Terima kasih telah berbelanja di toko kami.`,
+  };
+
+  transporter.sendMail(mailOptions, (err, success) => {
+    if (err) throw err;
+    console.log("Email sent:" + info.response);
+  });
+
   console.log("NEW ORDER", newOrder);
 
   res.json({ ok: true });
@@ -163,7 +184,7 @@ exports.createCashOrder = async (req, res) => {
   let newOrder = await new Order({
     products: userCart.products,
     paymentIntent: {
-      id: uniqueid(),
+      id: "_" + Math.random().toString(36).substr(2, 9),
       amount: finalAmount,
       currency: "idr",
       status: "Cash On Delivery",
@@ -186,6 +207,18 @@ exports.createCashOrder = async (req, res) => {
 
   let updated = await Product.bulkWrite(bulkOption, { new: true });
   console.log("UPDATED QUANTITY AND SOLD OF PRODUCTS ", updated);
+
+  const mailOptions = {
+    from: process.env.EMAIL,
+    to: req.user.email,
+    subject: "Status Pesanan",
+    text: `Order ID: ${newOrder.paymentIntent.id.toString()}\n\n\nAlamat anda akan kami cek terlebih dahulu maksimal 1X24jam. Terima kasih telah berbelanja di toko kami.`,
+  };
+
+  transporter.sendMail(mailOptions, (err, success) => {
+    if (err) throw err;
+    console.log("Email sent:" + info.response);
+  });
 
   console.log("NEW ORDER", newOrder);
 
