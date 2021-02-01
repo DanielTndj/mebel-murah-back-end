@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+// const koa = require("koa");
+// const server = new koa();
 const { readdirSync } = require("fs");
 require("dotenv").config();
 
@@ -31,3 +33,5 @@ readdirSync("./routes").map((route) =>
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+// module.exports = server.listen(port);
