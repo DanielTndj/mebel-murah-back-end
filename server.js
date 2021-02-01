@@ -11,8 +11,10 @@ require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 8080;
 
+app.get("/", (req, res) => res.send("API MEBEL MURAH"));
+
 mongoose
-  .connect(process.env.MONGO_URI||process.env.DATABASE, {
+  .connect(process.env.MONGO_URI || process.env.DATABASE, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
