@@ -12,7 +12,7 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 mongoose
-  .connect(process.env.DATABASE, {
+  .connect(process.env.MONGO_URI||process.env.DATABASE, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
