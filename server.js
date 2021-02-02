@@ -14,7 +14,7 @@ const port = process.env.PORT || 8080;
 app.get("/", (req, res) => res.send("API MEBEL MURAH"));
 
 mongoose
-  .connect(process.env.MONGO_URI || process.env.DATABASE, {
+  .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
@@ -32,8 +32,8 @@ readdirSync("./routes").map((route) =>
   app.use("/api", require(`./routes/${route}`))
 );
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(process.env.PORT||8000, () => {
+  console.log(`Server is running on successfully`);
 });
 
 // module.exports = server.listen(port);

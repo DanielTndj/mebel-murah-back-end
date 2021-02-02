@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install npm && run build",
     "test": "mocha --recursive --exit"
+  },
+  "engines": {
+    "node": "14.15.0"
   },
   "keywords": [],
   "author": "",
