@@ -28,11 +28,11 @@ app.use(morgan("dev"));
 app.use(bodyParser.json({ limit: "2mb" }));
 app.use(cors());
 
-readdirSync("./routes").map((route) =>
+readdirSync(__dirname + "/routes").map((route) =>
   app.use("/api", require(`./routes/${route}`))
 );
 
-app.listen(process.env.PORT||8000, () => {
+app.listen(process.env.PORT || 8000, () => {
   console.log(`Server is running on successfully`);
 });
 
