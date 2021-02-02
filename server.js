@@ -29,7 +29,7 @@ app.use(bodyParser.json({ limit: "2mb" }));
 app.use(cors());
 
 readdirSync(__dirname + "/routes").map((route) =>
-  app.use("/api", require(`./routes/${route}`))
+  app.use("/api", require(`${__dirname}/routes/${route}`))
 );
 
 app.listen(process.env.PORT || 8000, () => {
